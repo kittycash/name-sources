@@ -74,18 +74,16 @@ def kitty_name():
         kitty = KittyName.query.filter_by(used=False).first()
         # Send message if none is available
         if kitty is None:
-            return jsonify(status_code=404,
-                           message='No kitty name found')
+            return jsonify(message='No kitty name found'), 404
         # Send available kitty name object
-        return jsonify(name=kitty.name, name_id=kitty.id,
-                       description=kitty.description)
+        return jsonify(name=kitty.name, id=kitty.id,
+                       description=kitty.description), 200
     elif request.method == 'POST':
         # Parse request
         json_obj = request.get_json(silent=True)
         # If no kitty name was sent then return message to sender
         if json_obj["name"] is None:
-            return jsonify(status_code=400,
-                           message='Bad Request')
+            return jsonify(message='Bad Request'), 400
         # Get kitty name and desc from json object
         name, description = json_obj['name'], json_obj['description']
         # Set description if none has been given
@@ -101,8 +99,7 @@ def kitty_name():
         db.session.commit()
         kitty.save()
         # Retrun message to sender
-        return jsonify(status_code=201,
-                       message='Saved kitty name')
+        return jsonify(message='Saved kitty name'), 201
 
 @app.route('/use_kitty/<int:id>', methods=['POST'])
 def use_kitty_name(id):
@@ -110,18 +107,18 @@ def use_kitty_name(id):
     kitty = KittyName.query.get(id)
     # Return 404 message if kitty is not found
     if kitty is None:
-        return jsonify(status_code=404,
-                       message="kitty was not found")
+        return jsonify(message="kitty was not found"), 404
     # Return not acceptable when kitty has already been used
     # note: I'm not sure if this status code is correct
     if kitty.used:
-        return jsonify(status_code=406,
-                       message="Kitty name has already been used")
+        return jsonify(message="Kitty name has already been used"), 406
+    # Make kitty used
     kitty.used = True
+    # Save kitty
     db.session.add(kitty)
     db.session.commit()
-    return jsonify(status_code=200,
-                   message="Completed successfully")
+    # Respond to sender
+    return jsonify(message="Completed successfully"), 200
 
 if __name__ == '__main__':
     '''Call database function and exports data to db'''
