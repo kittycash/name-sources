@@ -39,7 +39,7 @@ def load_data():
         Loads data into database
         TODO: load data from rest of sources
     '''
-    data = main(start=1, stop=30)
+    data = main()
     for i in data:
         for j in i.find_all('li'):
             name = j.find('span', attrs={'class', 'result-name'})
