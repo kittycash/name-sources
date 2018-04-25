@@ -12,8 +12,9 @@ from scraper import *
 import os
 
 ## Define env var for app
-APP_PORT = os.getenv('APP_PORT')
-APP_DATA = os.getenv("DATABASE_URL")
+APP_PORT    = os.getenv('APP_PORT')
+APP_DATA    = os.getenv("DATABASE_URL")
+HOST        = os.getenv('APP_HOST')
 IS_APP_DATA = os.getenv('IS_APP_DATA')
 
 ## Set the port for app if none has been set
@@ -23,6 +24,9 @@ if APP_PORT is None:
 ## Use locat sqlite db engine if no db env var has been set
 if APP_DATA is None:
     APP_DATA = 'sqlite:///kitty_db.sqlite3'
+
+if HOST is None:
+    HOST = '0.0.0.0'
 
 ## Init app
 app = Flask(__name__)
@@ -39,17 +43,27 @@ def load_data():
         Loads data into database
         TODO: load data from rest of sources
     '''
+    # Scrape site.
     data = main()
+    # Loop over results from scraped site
     for i in data:
+        # Narrow down data to what I want
         for j in i.find_all('li'):
+            # Find name
             name = j.find('span', attrs={'class', 'result-name'})
+            # If no name has been found then skip rest of loop block
             if name is None:
                 continue
+            # Find a description.
             description = j.find('span', attrs={'class', 'result-desc'}).text.strip()
+            # Create a new kitty
             kitty = KittyName(name=name.text.strip(), description=description,
                     used=False)
+            # Add kitty to db session
             db.session.add(kitty)
+        # Save kitty in database
         db.session.commit()
+    # Set IS_APP_DATA env var to a value so that the app will know that site was already scraped
     os.environ['IS_APP_DATA'] = 'True'
 
 # End point to get kitty name
@@ -128,5 +142,5 @@ if __name__ == '__main__':
         # then load data into database from websites
         if IS_APP_DATA is None:
             load_data()
-    app.run(port=APP_PORT)
+    app.run(host=HOST, port=APP_PORT)
 
