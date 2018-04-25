@@ -115,7 +115,7 @@ def kitty_name():
         # Retrun message to sender
         return jsonify(message='Saved kitty name'), 201
 
-@app.route('/use_kitty/<int:id>', methods=['POST'])
+@app.route('/use_kitty/<int:id>', methods=['PATCH', 'PUT'])
 def use_kitty_name(id):
     # Query db for kitty assigned to id
     kitty = KittyName.query.get(id)
