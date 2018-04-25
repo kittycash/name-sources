@@ -13,7 +13,7 @@ import os
 
 ## Define env var for app
 APP_PORT    = os.getenv('APP_PORT')
-APP_DATA    = os.getenv("DATABASE_URL")
+APP_DATA    = os.getenv('DATABASE_URL')
 HOST        = os.getenv('APP_HOST')
 IS_APP_DATA = os.getenv('IS_APP_DATA')
 
@@ -30,8 +30,8 @@ if HOST is None:
 
 ## Init app
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = APP_DATA
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = APP_DATA
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db.init_app(app)
 
 def create_db():
@@ -83,7 +83,7 @@ def kitty_name():
         TODO: Stress test endpoint and do other request tests
     '''
     ## Respond according to request method
-    if request.method == "GET":
+    if request.method == 'GET':
         # Get the first available unused kitty name
         kitty = KittyName.query.filter_by(used=False).first()
         # Send message if none is available
@@ -96,7 +96,7 @@ def kitty_name():
         # Parse request
         json_obj = request.get_json(silent=True)
         # If no kitty name was sent then return message to sender
-        if json_obj["name"] is None:
+        if json_obj['name'] is None:
             return jsonify(message='Bad Request'), 400
         # Get kitty name and desc from json object
         name, description = json_obj['name'], json_obj['description']
@@ -121,18 +121,18 @@ def use_kitty_name(id):
     kitty = KittyName.query.get(id)
     # Return 404 message if kitty is not found
     if kitty is None:
-        return jsonify(message="kitty was not found"), 404
+        return jsonify(message='kitty was not found'), 404
     # Return not acceptable when kitty has already been used
     # note: I'm not sure if this status code is correct
     if kitty.used:
-        return jsonify(message="Kitty name has already been used"), 406
+        return jsonify(message='Kitty name has already been used'), 406
     # Make kitty used
     kitty.used = True
     # Save kitty
     db.session.add(kitty)
     db.session.commit()
     # Respond to sender
-    return jsonify(message="Completed successfully"), 200
+    return jsonify(message='Completed successfully'), 200
 
 if __name__ == '__main__':
     '''Call database function and exports data to db'''
