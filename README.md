@@ -15,11 +15,21 @@ This repo is where we're going to stash our sources for kitty names, along with 
 > for production environment please use WSGI with a production grade server.
 
 ### Environment variables
- Thse environment variables are used to determine how the API operates.
+ These environment variables are used to determine how the API operates.
 
 1. APP_DATA - Datermines the database to be used. sqlite://kitt_db.sqlite3 is the default.
 2. APP_PORT - Determines the port to run on. Defaults to port 3000.
 3. HOST - This environment variable is used to determine whether to run locally or open to outside requests. Defaults to ouside request.
 Set to localhost host if you only want listen locally.
-4. IS_APP_DATA - when it is not set the app will scrape a site and download certain names to load into database.
+4. IS_APP_DATA - When it is not set the app will scrape a site and download certain names to load into database.
+You can set this to any garbage value, and the app will avoid scraping the site. Otherwise, the app will scrape the site.
 
+# TODO
+Load other data to the database.
+```
+    KittyName(name=name, description=dercription, used=False)
+    db.session.add(kitty)
+    db.session.commit()
+```
+Loads a kitty name into the database.
+Refer to `load_data()` function in src/app for an example of how this is done.
