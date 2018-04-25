@@ -32,4 +32,4 @@ Load other data to the database.
     db.session.commit()
 ```
 Loads a kitty name into the database.
-Refer to `load_data()` function in src/app for an example of how this is done.
+Refer to `load_data()` function in src/app.py for an example of how this is done.
