@@ -1,8 +1,8 @@
 ## Kitty names
 This repo is where we're going to stash our sources for kitty names, along with any related scripts or code.
 ## API Endpoints
-* /kitty -> [POST and GET] for POST send JSON object with {name: <type: string, required: true>, description: <type: string, optional: true>} and for GET a JSON object {description: <type:string>, id: <type: int>, name: <type: string>} if name is found or {message: <type: string>} otherwise, is returned. POST returns 201 on success and 400 on bad request. GET return 200 if a name is found and 404 otherwise.
-* /use_kitty [POST]
+* /kitty -> Accepts [POST and GET]. For POST send JSON object with {name: <type: string, required: true>, description: <type: string, optional: true>} and for GET a JSON object {description: <type: string>, id: <type: int>, name: <type: string>} if name is found or {message: <type: string>} otherwise, is returned. POST returns 201 on success and 400 on bad request. GET return 200 if a name is found and 404 otherwise.
+* /use_kitty/<int: id> -> Accepts [PATCH and PUT]. Changes kitty->used to true, for the kitty->id. Returns 200 on success, 404 if kitty with id was not found and 406 if kitty->id had already been used.
 
 ### Installation
 > Please follow staps below.
