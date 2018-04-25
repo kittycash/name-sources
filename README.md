@@ -1,7 +1,7 @@
 ## Kitty names
 This repo is where we're going to stash our sources for kitty names, along with any related scripts or code.
 ## API Endpoints
-* /kitty -> [POST and GET] for POST{name: required, description: optional}
+* /kitty -> [POST and GET] for POST send JSON object with {name: required, description: optional} and for GET a JSON object {description: <type:string>, id: <type: int>, name: <type: string>} if name is found or {message: <type: string>} otherwise, is returned. POST returns 201 on success and 400 on bad request.
 * /use_kitty [POST]
 
 ### Installation
@@ -18,7 +18,7 @@ This repo is where we're going to stash our sources for kitty names, along with 
  These environment variables are used to determine how the API operates.
 
 1. APP_PORT - Determines the port to run on. Defaults to port 3000.
-2. DATABASE_URL - Datermines the database to be used. Dafaults to sqlite://kitt_db.sqlite3.
+2. DATABASE_URL - Datermines the database to be used. Dafaults to sqlite:///kitt_db.sqlite3.
 3. HOST - This environment variable is used to determine whether to run locally or open to outside requests. Defaults to ouside request.
 Set to `localhost` host if you only want listen locally.
 4. IS_APP_DATA - When it is not set the app will scrape a site and download certain names to load into database.
