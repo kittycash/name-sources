@@ -3,9 +3,10 @@
 import sys
 import csv
 import json
+import hashlib
 
-source = "https://github.com/organisciak/names/blob/master/data/us-names-by-gender.csv"
 alphabet = "Latin"
+source = "https://github.com/organisciak/names/blob/master/data/us-names-by-gender.csv"
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
@@ -15,7 +16,14 @@ if __name__ == '__main__':
             'base': sys.argv[0]
         })
         exit(1)
-    with open(sys.argv[1]) as csvfile:
+    source_filename = sys.argv[1]
+    source_hash = ""
+    with open(source_filename, 'rb') as f:
+        m = hashlib.sha256()
+        m.update(f.read())
+        source_hash = m.hexdigest()
+    source = source + ':' + source_hash
+    with open(source_filename) as csvfile:
         items = csv.reader(csvfile)
         for row in items:
             gender, name, count = row
