@@ -27,7 +27,7 @@ if __name__ == '__main__':
         items = csv.reader(csvfile)
         for row in items:
             gender, name, count = row
-            print("insert into names values(%(alphabet)s, %(source)s, %(name)s);" % {
+            print("insert into names values(%(alphabet)s, %(source)s, %(name)s, false);" % {
                 'name': json.dumps(name),
                 'source': json.dumps(source),
                 'alphabet': json.dumps(alphabet)

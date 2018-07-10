@@ -10,7 +10,7 @@ import json
 def make_name_handler(original_url, output_filename):
     f = open(output_filename, 'w')
     def handle(name_info):
-        f.write("insert into names values(%(alphabet)s, %(source)s, %(name)s);\n" % {
+        f.write("insert into names values(%(alphabet)s, %(source)s, %(name)s, false);\n" % {
                 'name': json.dumps(name_info['name']),
                 'source': json.dumps(original_url),
                 'alphabet': json.dumps("Chinese")
